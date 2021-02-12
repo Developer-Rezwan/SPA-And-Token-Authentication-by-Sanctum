@@ -31,7 +31,7 @@ const routes = [
 ];
 
 function isLoggedIn() {
-    return localStorage.getItem('auth');
+    return localStorage.getItem('token');
 }
 const router = createRouter({
     history: createWebHistory(),

@@ -65,8 +65,8 @@ export default {
     });
     function login() {
       User.login(state.form)
-        .then(() => {
-          localStorage.setItem("auth", "true");
+        .then((res) => {
+          localStorage.setItem("token", res.data);
           router.push("/dashboard");
           store.commit("SET_IS_LOGGED_IN", true);
         })

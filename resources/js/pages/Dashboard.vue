@@ -22,8 +22,7 @@ export default {
           user.value = res.data;
         })
         .catch(() => {
-          localStorage.removeItem("auth");
-          User.logout();
+          localStorage.removeItem("token");
           router.push("/login");
         });
     });

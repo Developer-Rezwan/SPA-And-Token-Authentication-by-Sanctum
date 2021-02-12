@@ -25,23 +25,26 @@ class AuthController extends Controller
                     "email" => $request->email,
                     'password' => Hash::make($request->password)
               ]);
-    }
+     }
     public function login(Request $request)
     {
-        $request->validate([
-            'email'                 => "email|required",
-            'password'           => "required"
-        ]);
-        if(Auth::attempt($request->only('email' , 'password'))){
-            return response()->json(Auth::user() , 200) ;
-        }else{
-            throw ValidationException::withMessages([
-                'error' => ['The provided credentials are incorrect.'],
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required',
             ]);
-        }
+
+            $user = User::where('email', $request->email)->first();
+            $deviceName = $request->header('User-Agent');
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                throw ValidationException::withMessages([
+                    'email' => ['The provided credentials are incorrect.'],
+                ]);
+            }
+            return $user->createToken($deviceName)->plainTextToken;
     }
-    public function logout()
+    public function logout(Request $request)
     {
-        return Auth::logout();
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['logout' => true] , 200);
     }
 }

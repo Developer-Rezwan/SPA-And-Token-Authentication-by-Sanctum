@@ -72,11 +72,11 @@ export default {
     });
     const router = useRouter();
     onMounted(() => {
-      if (!!localStorage.getItem("auth")) store.commit("SET_IS_LOGGED_IN", true);
+      if (!!localStorage.getItem("token")) store.commit("SET_IS_LOGGED_IN", true);
     });
     function logout() {
       User.logout().then(() => {
-        localStorage.removeItem("auth");
+        localStorage.removeItem("token");
         router.push("/");
         store.commit("SET_IS_LOGGED_IN", false);
       });
